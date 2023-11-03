@@ -1,0 +1,41 @@
+{
+  "greetings": "🙋‍♂ Hello there! \n\nWhether you're seeking information about bipolar disorder, suspect that you or someone you know might be experiencing it, or have already received a diagnosis, you've come to the right place. Please keep in mind that I'm here to provide guidance and information, but not medical advice. \n\nHow can I assist you today? \n\nFeel free to type your message or send a voice note.",
+  "respondViaText": "Great. Then I will respond via text message.\nJust talk to me how can I help?",
+  "optionsMessage": "Choose a theme from the options below:\n\n",
+  "options": [
+    "Casual conversation",
+    "Do I have bipolar disorder?",
+    "I was recently diagnosed with bipolar disorder.",
+    "I have been living with bipolar disorder for years.",
+    "I know someone who has bipolar disorder.",
+    "I have a family member with bipolar disorder.",
+    "I'm a professional seeking information.",
+    "Managing relationships with bipolar disorder."
+  ],
+  "selectingVoice": "Fantastic choice! Now, let's customize my voice further. 🎙\n\nWould you prefer a male or female voice for my responses? You can always adjust this setting later if you wish.\n\nPlease respond with 'male' or 'female'. 👤",
+  "bipolarTrainingPrompt": "Act like a health practioner and administer the full Mood Disorder Questionnaire(MDQ). Do one question at a time and wait for one answer. Ensure clarity that the questionnaire is  not a diagnostic tool and serves purely for informational purposes.",
+  "justChoseMode": "Just write '1' or '2'. What's your choice? 👤",
+  "justChoseGender": "Just write 'male' or 'female'. What's your choice? 👤",
+  "genderSet": "Very nice!\nJust talk to me how can I help?",
+  "invalidAccountResponse": "Sorry, you are not authorized to use ALEX.\nIf you have any questions about the use of ALEX, please wait for authorization.\nThank you.",
+  "shareOnTwitterMessage": "If you're loving the experience, why not spread the word? :bird: Share your love on Twitter\n\nhttps://bit.ly/3KC446I",
+  "varOfModes": {
+    "mode 1": ["One.", "One", "one.", "one", "1.", "1", "Mode 1.", "Mode 1", "Mode one.", "Mode one"],
+    "mode 2": ["Two.", "Two", "two.", "two", "2.", "2", "Mode 2.", "Mode 2", "Mode two.", "Mode two"]
+  },
+  "genders": ["male", "female"],
+  "varOfGender": {
+    "male": ["Male", "Male.", "male", "male.", "Mail", "Mail.", "mail", "mail."],
+    "female": ["Female", "Female.", "female", "female."]
+  },
+  "voice": {
+    "male": "9CkmeJVXPsekR7RdQJPh",
+    "female": "PkWUsRLGmP5l00JeisUZ",
+    "base": "PkWUsRLGmP5l00JeisUZ"
+  },
+  "shareOnTwitterAfterMessages": 8,
+  "monthNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  "iaCommands": {
+    "reset": "!reset"
+  }
+}
