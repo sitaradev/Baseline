@@ -1,6 +1,6 @@
 import twilio from 'twilio';
 
-if (!process.env.MESSAGING_SERVICE_ID) {
+if (!process.env.MESSAGING_SERVICE_ID || !process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
   console.error("Missing required environment variables");
   process.exit(1);
 }
@@ -52,7 +52,9 @@ export class Client {
 
   client:any
 
-  constructor(accountSid:string, authToken: string){
+  constructor(){
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
     this.client = twilio(accountSid, authToken);
   }
 
