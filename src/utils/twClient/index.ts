@@ -1,4 +1,7 @@
 import twilio from 'twilio';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 if (!process.env.MESSAGING_SERVICE_ID || !process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
   console.error("Missing required environment variables");
@@ -10,34 +13,54 @@ export type RawMessage = {
     Body: string
     ProfileName: string
     ButtonPayload: string
+    NumMedia:  string
+    MediaUrl0: string
+    MediaContentType0: string
+    SmsSid: string
 }
 
 class ClientMessage {
   
     from = '';
-    message = '';
+    body = '';
     contact = {
         number: '',
         name: ''
     };
     buttonAction = '';
+    hasMedia = false;
+    mediaUrl = '';
+    mediaType = '';
+    id = '';
 
     constructor(message: RawMessage){
+      console.log('raw : ', message);
       this.from = message.From
-      this.message = message.Body
+      this.body = message.Body
       this.contact = {
         number: message.From.substr(message.From.indexOf('whatsapp:+')),
         name: message.ProfileName
       }
       this.buttonAction = message.ButtonPayload
+      this.hasMedia = Number(message.NumMedia) > 0
+      this.mediaUrl = message.MediaUrl0
+      this.mediaType = message.MediaContentType0
+      this.id  =message.SmsSid
     }
   
     getClientMessage(){
-      return this.message;
+      return this.body;
     }
   
     getContact(){
-        return this.contact;
+      return this.contact;
+    }
+
+    async downloadMedia(){
+      return {
+        mimetype: this.mediaType,
+        url: this.mediaUrl
+      }
     }
 
 }

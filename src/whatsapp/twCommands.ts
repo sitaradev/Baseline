@@ -24,18 +24,15 @@ import {
 import { UserInfo } from '../config/types';
 import { AllowedUsers } from './types';
 
-
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const BOT_PHONE_NUMBER = process.env.PHONE_NUMBER as string;
 
 // User info and allowed users
 const userInfo: UserInfo = {};
 const allowedUsers: AllowedUsers = new Set([]);
-
-// Helper functions
-const delay = (duration: number) => {
-  return new Promise((resolve) => setTimeout(resolve, duration));
-};
 
 async function logContact(contact: Contact) {
   const contactNumber = contact.number;
@@ -77,47 +74,46 @@ async function registerUser(message: Message, client: Client) {
 }
 
 async function getClientMessage(message: Message): Promise<string | undefined> {
-  return message.message;
-  // if (!message.hasMedia) {
-  //   return message.body;
-  // }
 
-  // console.log("Received a media message");
+  if (!message.hasMedia) {
+    return message.body;
+  }
 
-  // const media = await message.downloadMedia();
-  // if (!media || !media.mimetype.startsWith("audio/")) {
-  //   console.log("The media is not an audio file");
-  //   return;
-  // }
-  
-  // console.log('Received an audio message');
+  console.log("Received a media message");
 
-  // const audioFilesDir = path.join(__dirname, 'audio_files');
-  // if (!fs.existsSync(audioFilesDir)) {
-  //   fs.mkdirSync(audioFilesDir);
-  //   console.log('Created audio_files directory');
-  // }
+  const media = await message.downloadMedia();
+  if (!media || !media.mimetype.startsWith("audio/")) {
+    console.log("The media is not an audio file");
+    return;
+  }
   
-  // const inputPath = path.join(audioFilesDir, `${message.id._serialized}.ogg`);
-  // const outputPath = path.join(audioFilesDir, `${message.id._serialized}.mp3`);
-  // fs.writeFileSync(inputPath, media.data, { encoding: 'base64' });
+  console.log('Received an audio message');
+
+  const audioFilesDir = path.join(__dirname, 'audio_files');
+  if (!fs.existsSync(audioFilesDir)) {
+    fs.mkdirSync(audioFilesDir);
+    console.log('Created audio_files directory');
+  }
   
-  // try {
-  //   await transcript.convertAudioToMp3(inputPath, outputPath);
-  //   console.log('Audio conversion to MP3 succeeded');
+  const outputPath = path.join(audioFilesDir, `${message.id}.mp3`);
+  
+  try {
+    await transcript.convertAudioToMp3(media.url, outputPath);
+    console.log('Audio conversion to MP3 succeeded');
     
-  //   const recognizedText = await transcript.sendAudioForTranscription(outputPath);
-  //   if (!recognizedText) {
-  //     console.log('Audio transcription failed');
-  //     return;
-  //   }
+    const recognizedText = await transcript.sendAudioForTranscription(outputPath);
+    console.log("recognizedText : ", recognizedText)
+    if (!recognizedText) {
+      console.log('Audio transcription failed');
+      return;
+    }
 
-  //   console.log("Recognized text from audio:", recognizedText);
-  //   await deleteContent(audioFilesDir);
-  //   return recognizedText;
-  // } catch (err) {
-  //   console.error('Error in converting or transcribing the audio:', err);
-  // }
+    console.log("Recognized text from audio:", recognizedText);
+    await deleteContent(audioFilesDir);
+    return recognizedText;
+  } catch (err) {
+    console.error('Error in converting or transcribing the audio:', err);
+  }
 }
 
 function containsNumber(message: string) {
