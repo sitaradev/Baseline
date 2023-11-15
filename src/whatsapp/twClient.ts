@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import WhatsAppClient from '../utils/twClient/index';
+import { commands } from './twCommands';
 import type { RawMessage } from '../utils/twClient';
 
 const client = new WhatsAppClient.Client();
@@ -17,7 +18,7 @@ app.post("/callback", (req:any, res:any) => {
 app.post("/incoming", (req:any) => {
     const message:RawMessage = req.body;
     const clientMessage = new WhatsAppClient.Message(message);
-    console.log("clientMessage: ", clientMessage)
+    commands(clientMessage, client);
 })
 
 app.listen(4000, () => {
