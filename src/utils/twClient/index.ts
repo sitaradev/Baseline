@@ -34,7 +34,6 @@ class ClientMessage {
     id = '';
 
     constructor(message: RawMessage){
-      console.log('raw : ', message);
       this.from = message.From
       this.body = message.Body
       this.contact = {
