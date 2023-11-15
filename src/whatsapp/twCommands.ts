@@ -1,5 +1,6 @@
 // Importing npm modules
 import type { Message, Client, Contact } from '../utils/twClient';
+import prompts from '../config/prompt';
 
 import fs from 'fs';
 import path from 'path';
@@ -8,9 +9,6 @@ import chatGPTService from '../openai/openai';
 import { deleteContent } from '../utils/delete';
 import transcript from '../openai/transcript';
 import {
-  options,
-  bipolarTrainingPrompt,
-  invalidAccountResponse,
   monthNames,
   iaCommands,
 } from '../config/data.json';
@@ -116,18 +114,12 @@ async function getClientMessage(message: Message): Promise<string | undefined> {
   }
 }
 
-function containsNumber(message: string) {
-  return /[1-8]/.test(message);
-}
-
-async function createReply(clientMessage: string, sender: string, client: Client, contact: Contact) {
-  const doesContainNumber = containsNumber(clientMessage);
-  const selectedOption = parseInt(clientMessage, 10);
-
+async function createReply(clientMessage: Message, sender: string, client: Client, contact: Contact) {
+ 
   const botMessage = await chatGPTService.getGPTResponse({
-    clientMessage: doesContainNumber ? options[selectedOption - 1] : clientMessage,
+    clientMessage: clientMessage.listDescription,
     sender,
-    ...(doesContainNumber && selectedOption === 2 ? { trainingPrompt: bipolarTrainingPrompt } : {}),
+    ...(prompts[clientMessage.listAction] ? { trainingPrompt: prompts[clientMessage.listAction] } : {}),
   });
 
   client.sendMessage(sender, botMessage, { mentions: [contact] });
@@ -203,7 +195,7 @@ export async function commands(message:Message, client:Client): Promise<void> {
       break;
 
     default:
-      await createReply(clientMessage, sender, client, contact);
+      await createReply(message, sender, client, contact);
       console.log('Reply sent to user');
   }
 }
