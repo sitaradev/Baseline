@@ -74,7 +74,7 @@ class ClientMessage {
 type Content = {
   body?: string;
   contentSid?: string;
-  contentVariables?: string;
+  contentVariables?: any;
 }
 
 export class Client {
@@ -89,8 +89,14 @@ export class Client {
 
   sendMessage(chatId: string, content: string | Content, extra: any ){
 
-    const _content = typeof content == 'string' ? { body : content} : content
-    
+    const isString = typeof content != 'string'
+
+    if(isString && content.contentVariables){
+      content.contentVariables = JSON.stringify(content.contentVariables)
+    }
+
+    const _content = !isString ? { body : content} : content
+
     return this.client.messages.create({
       from: process.env.MESSAGING_SERVICE_ID, 
       to: chatId,

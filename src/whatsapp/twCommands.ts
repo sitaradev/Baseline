@@ -62,7 +62,8 @@ async function registerUser(message: Message, client: Client) {
   }
  
   client.sendMessage(sender, {
-    contentSid: GREETING_TEMPLATE_ID
+    contentSid: GREETING_TEMPLATE_ID,
+    contentVariables: { "1": message.contact.name }
   }, { mentions: [contact] });
      
   userInfo[sender] = {
@@ -84,6 +85,7 @@ async function getClientMessage(message: Message): Promise<string | undefined> {
     console.log("The media is not an audio file");
     return;
   }
+
   
   console.log('Received an audio message');
 
