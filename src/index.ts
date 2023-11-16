@@ -1,3 +1,2 @@
-import './whatsapp/client';
-
-console.log('Application has started.');
+// import './whatsapp/client';
+import './whatsapp/twClient';
