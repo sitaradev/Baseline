@@ -119,7 +119,7 @@ async function getClientMessage(message: Message): Promise<string | undefined> {
 async function createReply(clientMessage: Message, sender: string, client: Client, contact: Contact) {
  
   const botMessage = await chatGPTService.getGPTResponse({
-    clientMessage: clientMessage.listDescription,
+    clientMessage: clientMessage.listDescription || clientMessage.body,
     sender,
     ...(prompts[clientMessage.listAction] ? { trainingPrompt: prompts[clientMessage.listAction] } : {}),
   });
