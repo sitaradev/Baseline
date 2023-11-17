@@ -48,6 +48,9 @@ async function sendAudioForTranscription(file_path: string) {
 async function convertAudioToMp3(inputPath: string, outputPath: string) {
   return new Promise((resolve, reject) => {
     ffmpeg(inputPath)
+    .inputOption(
+      '-headers', 'Authorization: Basic ' + process.env.AUTH_HEADER
+    )
       .format('mp3')
       .on('error', (err: Error) => {
         console.log('Error in Converstion:', err);
