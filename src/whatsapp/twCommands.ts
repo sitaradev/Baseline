@@ -11,6 +11,7 @@ import transcript from '../openai/transcript';
 import {
   monthNames,
   iaCommands,
+  invalidAccountResponse
 } from '../config/data.json';
 import { 
   modes, 
@@ -151,7 +152,7 @@ export async function commands(message:Message, client:Client): Promise<void> {
 
   if (allowedUsers.size > 0 && !allowedUsers.has(sender.split('@')[0])) {
     console.log('Unauthorized access attempt from:', sender);
-    // client.sendMessage(sender, invalidAccountResponse, { mentions: [contact] });
+    client.sendMessage(sender, invalidAccountResponse, { mentions: [contact] });
     return;
   }
 
