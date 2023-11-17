@@ -160,6 +160,8 @@ export async function commands(message:Message, client:Client): Promise<void> {
     console.log("Failed to process client message");
     return;
   }
+  
+  message.body = clientMessage
 
   console.log("Processed client message:", clientMessage);
 
